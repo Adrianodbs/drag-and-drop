@@ -1,6 +1,7 @@
 import { useState, FormEvent, useEffect } from 'react'
-import { Task } from './task'
+import { Task } from './components/task'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
+import Form from './components/Form'
 
 interface TaskItemProps {
   id: string
@@ -57,23 +58,13 @@ function App() {
     <div className="w-full h-screen flex flex-col items-center px-4 pt-52 bg-slate-700">
       <h1 className="font-bold text-4xl text-white mb-4">Tarefas</h1>
 
-      <form className="w-full max-w-2xl mb-4 flex" onSubmit={handleAddTask}>
-        <input
-          type="text"
-          placeholder="Adicione uma nova tarefa..."
-          className="flex-1 h-10 rounded-md px-2"
-          value={newTask}
-          onChange={event => setNewTask(event.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 ml-4 rounded-md px-4 text-white font-bold"
-        >
-          +
-        </button>
-      </form>
+      <Form
+        onSubmit={handleAddTask}
+        value={newTask}
+        onChange={event => setNewTask(event.target.value)}
+      />
 
-      <section className="bg-zinc-100 p-3 rounded-md w-full max-w-2xl">
+      <section className="bg-slate-200 p-3 rounded-md w-full max-w-2xl">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="tasks" type="list" direction="vertical">
             {provided => (
