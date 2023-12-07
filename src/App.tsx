@@ -2,37 +2,29 @@ import { useState, FormEvent } from 'react'
 import { Task } from './task'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 
-function App() {
-  const [newTast, setNewTask] = useState('')
+interface TaskItemProps {
+  id: string
+  name: string
+}
 
-  const [tasks, setTasks] = useState([
-    {
-      id: '0',
-      name: 'Estudar react com typescript'
-    },
-    {
-      id: '1',
-      name: 'Inscrever no canal do Sujeito Programador'
-    },
-    {
-      id: '2',
-      name: 'Pagar o aluguel'
-    }
-  ])
+function App() {
+  const [newTask, setNewTask] = useState('')
+
+  const [tasks, setTasks] = useState<TaskItemProps[]>([])
 
   function handleAddTask(event: FormEvent) {
     event.preventDefault()
 
-    if (newTast === '') return
+    if (newTask === '') return
 
     let newItem = {
       id: `${tasks.length + 1}`,
-      name: newTast
+      name: newTask
     }
-    setTasks(allTasks => [...allTasks, newItem])
+
+    setTasks((allTasks: TaskItemProps[]) => [...allTasks, newItem])
     setNewTask('')
   }
-
   function reorder<T>(list: T[], startIndex: number, endIndex: number) {
     const result = Array.from(list)
     const [removed] = result.splice(startIndex, 1)
@@ -60,7 +52,7 @@ function App() {
           type="text"
           placeholder="Digite o nome da tarefa..."
           className="flex-1 h-10 rounded-md px-2"
-          value={newTast}
+          value={newTask}
           onChange={event => setNewTask(event.target.value)}
         />
         <button
