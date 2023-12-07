@@ -1,5 +1,5 @@
 import { useState, FormEvent, useEffect } from 'react'
-import { Task } from './components/task'
+import { Task } from './components/Task'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import Form from './components/Form'
 
@@ -54,8 +54,13 @@ function App() {
     setTasks(items)
   }
 
+  function handleDelete(taskId: string) {
+    const updatedTasks = tasks.filter(task => task.id !== taskId)
+    setTasks(updatedTasks)
+  }
+
   return (
-    <div className="w-full h-screen flex flex-col items-center px-4 pt-52 bg-slate-700">
+    <div className="w-full min-h-screen flex flex-col items-center justify-start px-4 pt-10 bg-slate-700">
       <h1 className="font-bold text-4xl text-white mb-4">Tarefas</h1>
 
       <Form
@@ -64,13 +69,18 @@ function App() {
         onChange={event => setNewTask(event.target.value)}
       />
 
-      <section className="bg-slate-200 p-3 rounded-md w-full max-w-2xl">
+      <section className="bg-slate-200 p-3 rounded-md w-full max-w-2xl mb-6">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="tasks" type="list" direction="vertical">
             {provided => (
               <article ref={provided.innerRef} {...provided.droppableProps}>
                 {tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
+                  <Task
+                    key={task.id}
+                    task={task}
+                    index={index}
+                    onClick={() => handleDelete(task.id)}
+                  />
                 ))}
 
                 {provided.placeholder}
